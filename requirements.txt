@@ -1,0 +1,5 @@
+Flask==2.3.3
+requests
+Flask-SQLAlchemy==3.0.5
+PyMySQL==1.1.1
+cryptography
