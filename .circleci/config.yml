@@ -20,7 +20,10 @@ jobs:
       - run:
           name: "Run Deploy Script"
           working_directory: scripts
-          command: python3 src/script.py
+          command: |
+            python3 src/script.py
+            poetry --version
+
 
 workflows:
   say-hello-workflow:
