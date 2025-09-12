@@ -1,0 +1,10 @@
+[tool.poetry]
+name = "my-scripts"
+version = "0.1.0"
+description = "A collection of Python scripts"
+authors = ["Joel Jose <you@example.com>"]
+package-mode = false 
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+jinja2 = "^3.1.2"

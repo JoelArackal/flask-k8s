@@ -1,5 +1,10 @@
 version: 2.1
 
+setup: true
+
+orbs:
+  continuation: circleci/continuation@0.3.1
+
 jobs:
   say-hello:
     docker:
@@ -12,17 +17,23 @@ jobs:
             echo Hello, World!
             echo $CIRCLE_SHA1
     
-  deploy_job:
+  dynamic_ci:
     docker:
       - image: cimg/python:3.12
     steps:
       - checkout
       - run:
-          name: "Run Deploy Script"
+          name: Install script dependencies
+          working_directory: scripts
+          command: poetry install --no-ansi --sync
+      - run:
+          name: "Run Dynamic CI Script"
           working_directory: scripts
           command: |
-            python3 src/script.py
-            poetry --version
+            poetry run python -m src.dynamic_ci
+            cat ./dynamic_ci.yaml
+      - continuation/continue:
+          configuration_path: ./scripts/dynamic_ci.yaml
 
 
 workflows:
@@ -31,6 +42,6 @@ workflows:
       - say-hello
       - hold:
           type: approval
-      - deploy_job:
+      - dynamic_ci:
           requires:
             - hold

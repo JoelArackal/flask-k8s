@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  
+  run_script:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: "Run Deploy Script"
+          working_directory: scripts
+          command: |
+            python3 src/{{ script }}
+            
+
+
+workflows:
+  deployment-workflow:
+    jobs:
+      - run_script
