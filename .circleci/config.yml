@@ -40,8 +40,4 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-      - hold:
-          type: approval
-      - dynamic_ci:
-          requires:
-            - hold
+      - dynamic_ci

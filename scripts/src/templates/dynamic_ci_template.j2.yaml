@@ -12,6 +12,23 @@ jobs:
           working_directory: scripts
           command: |
             python3 src/{{ script }}
+
+  test_container:
+    parameters:
+      image_tag:
+        type: string
+    docker:
+      - image: joeljozarackal/flask_app:<< parameters.image_tag >>
+    steps:
+      - run:
+          name: "Testing Container"
+          command: |
+            pwd
+            hostname
+            ls
+            ls -a
+            ls -la /app
+            
             
 
 
@@ -19,3 +36,6 @@ workflows:
   deployment-workflow:
     jobs:
       - run_script
+      - test_container:
+          name: Test Container
+          image_tag: v2
