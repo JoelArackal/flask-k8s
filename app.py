@@ -17,11 +17,12 @@ EXTERNAL_API = os.getenv("API_URL")
 
 # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Joel1234@localhost:3306/flask_db'
 # SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-MYSQL_USER = os.getenv('MYSQL_USER')
-MYSQL_PWD = os.getenv('MYSQL_PASSWORD')
-MYSQL_HOSTNAME = os.getenv('MYSQL_HOSTNAME')
-MYSQL_DB = os.getenv('MYSQL_DATABASE')
-SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PWD}@{MYSQL_HOSTNAME}:3306/{MYSQL_DB}'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+# MYSQL_USER = os.getenv('MYSQL_USER')
+# MYSQL_PWD = os.getenv('MYSQL_PASSWORD')
+# MYSQL_HOSTNAME = os.getenv('MYSQL_HOSTNAME')
+# MYSQL_DB = os.getenv('MYSQL_DATABASE')
+# SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PWD}@{MYSQL_HOSTNAME}:3306/{MYSQL_DB}'
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -84,6 +85,19 @@ def cars_api():
         response.append(car_json)
 
     return response
+
+@app.route('/cars',methods=['GET','POST'])
+def cars():
+    if request.method=="POST":
+        model = request.form['model']
+        price = int(request.form['price'])
+        car = Cars(model=model,price=price)
+        db.session.add(car)
+        db.session.commit()
+    
+    cars = Cars.query.order_by(db.desc(Cars.id)).all()
+    return render_template("cars.html", cars=cars)
+
 
 
 if __name__ == "__main__":

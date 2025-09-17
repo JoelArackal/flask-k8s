@@ -15,7 +15,8 @@ if __name__=="__main__":
 
     with open(output_path,"w") as f:
         f.write(template.render(
-            script=script
+            script=script,
+            regions=["eu","us","uae"]
         ))
 
         print("Rendered dynamic ci config")

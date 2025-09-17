@@ -28,6 +28,22 @@ jobs:
             ls
             ls -a
             ls -la /app
+
+  deploy_integration:
+    docker:
+      - image: cimg/base:current
+    parameters:
+      environment_name:
+        type: string
+      region:
+        type: string
+    steps:
+      - run:
+          name: "Running Deployment commands"
+          command: |
+            echo Deploying application to <<parameters.environment_name>> <<parameters.region>>
+
+
             
             
 
@@ -39,3 +55,19 @@ workflows:
       - test_container:
           name: Test Container
           image_tag: v2
+      - deploy_integration:
+          name: deploy_integration_to_development_<< matrix.region >>
+          environment_name: development
+          matrix:
+            alias: deploy_integration_development_matrix
+            parameters:
+              region: {{ regions }}
+      - deploy_integration:
+          name: deploy_integration_to_production_<< matrix.region >>
+          environment_name: production
+          matrix:
+            alias: deploy_integration_production_matrix
+            parameters:
+              region: {{ regions }}
+          requires:
+            - deploy_integration_development_matrix

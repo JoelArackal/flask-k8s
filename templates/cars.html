@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars</title>
+</head>
+<body>
+
+    <h3>Add New Car</h3>
+    <form action="/cars" method="post">
+        <label for="model">Model: </label>
+        <input type="text" name="model"><br>
+        <label for="price">Price: </label>
+        <input type="number" name="price"><br>
+        <input type="submit" value="Add">
+    </form>
+    <hr>
+    <h3>Cars</h3>
+    {% for car in cars %}
+    <p><b> {{car.model}}</b> <br>
+    Price: {{car.price}}</p>
+    {% endfor %}
+ 
+    <p><a href="/">Home</a></p>
+    <p><a href="/cars">Cars</a></p>
+    <p><a href="/external-api">News API</a></p>
+</body>
+</html>
