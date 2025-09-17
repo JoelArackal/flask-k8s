@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webapp
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: webapp
@@ -16,30 +16,32 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: joeljozarackal/flask-k8s:v4mysqldb
+        image: joeljozarackal/flask-k8s:v5sqlite
         ports:
-        - containerPort: 5001
+        - containerPort: 8080
         env:
-        - name: MYSQL_DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysqldatabase
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql_user
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql_password
-        - name: MYSQL_HOSTNAME
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: mysql_hostname
+        - name: API_URL
+          value: https://hacker-news.firebaseio.com/v0/item/8863.json
+        # - name: MYSQL_DATABASE
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret
+        #       key: mysqldatabase
+        # - name: MYSQL_USER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret
+        #       key: mysql_user
+        # - name: MYSQL_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret
+        #       key: mysql_password
+        # - name: MYSQL_HOSTNAME
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: mysql-config
+        #       key: mysql_hostname
 ---
 apiVersion: v1
 kind: Service
@@ -51,7 +53,7 @@ spec:
     app: webapp
   ports:
     - protocol: TCP
-      port: 5001
-      targetPort: 5001
+      port: 8080
+      targetPort: 8080
       nodePort: 30100
 

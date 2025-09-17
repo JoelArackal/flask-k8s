@@ -101,7 +101,7 @@ def cars():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=8080)
 
 
 '''
@@ -116,6 +116,8 @@ docker run -d --name my-mysql --network mynet --env-file .env mysql:8.0
 
 docker buildx build --platform=linux/amd64 -t joeljozarackal/flask-k8s:v4mysqldb .
 docker run -d --name my-app --network mynet --env-file .env -p 5001:5001 joeljozarackal/flask-k8s:v4mysqldb
+
+docker buildx build --platform=linux/amd64 -t joeljozarackal/flask-k8s:v5sqlite
 
 
 curl -X POST http://localhost:30100/cars_api -H "Content-Type: application/json" \

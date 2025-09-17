@@ -18,7 +18,7 @@ spec:
       - name: webapp
         image: webapp-image
         ports:
-        - containerPort: 5001
+        - containerPort: 8080
         env:
         - name: MYSQL_DATABASE
           valueFrom:
@@ -51,7 +51,7 @@ spec:
     app: webapp
   ports:
     - protocol: TCP
-      port: 5001
-      targetPort: 5001
+      port: 8080
+      targetPort: 8080
       nodePort: 30100
 
